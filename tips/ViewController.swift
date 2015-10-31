@@ -17,11 +17,21 @@ class ViewController: UIViewController {
     
     let tipPercentages = [0.18, 0.2, 0.22]
     
+    func loadSettings() {
+        // Do any additional setup after loading the view.
+        let defaults = NSUserDefaults.standardUserDefaults()
+        let intValue = defaults.integerForKey("default_tip_percent")
+        tipSegment.selectedSegmentIndex = intValue;
+        calcTips()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         tipLabel.text = "$0.00"
         totalLabel.text = "$0.00"
+        
+        loadSettings()
     }
 
     override func didReceiveMemoryWarning() {
@@ -29,6 +39,11 @@ class ViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        loadSettings()
+    }
+
     @IBAction func calcTips() {
         let billAmount = Double(billField.text!)
         if (billAmount != nil) {
